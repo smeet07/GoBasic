@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Go SSE Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 720px;
+      margin: 48px auto;
+      padding: 0 20px;
+      line-height: 1.5;
+    }
+
+    button {
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    #messages {
+      margin-top: 20px;
+      padding: 16px;
+      border: 1px solid #ddd;
+      min-height: 120px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Go Server-Sent Events</h1>
+  <button id="connect">Connect</button>
+  <div id="messages"></div>
+
+  <script>
+    const button = document.getElementById("connect");
+    const messages = document.getElementById("messages");
+
+    button.addEventListener("click", () => {
+      messages.innerHTML = "";
+      const events = new EventSource("/events");
+
+      events.onmessage = (event) => {
+        const item = document.createElement("div");
+        item.textContent = event.data;
+        messages.appendChild(item);
+      };
+
+      events.onerror = () => {
+        events.close();
+      };
+    });
+  </script>
+</body>
+</html>
