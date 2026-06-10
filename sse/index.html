@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Real-time Updates</title>
+  <style>
+    *{
+      font-family:Arial,sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <h2>Real-time Updates</h2>
+  <p id ="resp"></p>
+
+  <script>
+    var sse=new EventSource("/events");
+    var response=document.getElementById("resp");
+    sse.onmessage=function(event){
+      response.innerHTML+=event.data+" ";
+    }
+    sse.onerror=function(e){
+      setTimeout(()=>(response.innerHTML=""),5000);
+    };
+  </script>
+</body>
+</html>
