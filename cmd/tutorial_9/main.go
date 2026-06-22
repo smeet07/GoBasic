@@ -34,3 +34,26 @@ import "math/rand"
 // 	fmt.Println("Exiting process")
 
 // }
+
+var MAX_PRICE float32=5
+func main(){
+	var pizzaChannel=make(chan string)
+	var websites=[]string{"walmart.com","costco.com","wholefoods.com"}
+	for i:=range websites{
+		go checkpizzaPrices(websites[i],pizzaChannel)
+	}
+	sendMessage(pizzaChannel)
+}
+func checkpizzaPrices(website string,pizzaChannel chan string){
+	for{
+		time.Sleep(time.Second*1)
+		var pizzaPrice=rand.Float32()*20
+		if pizzaPrice<=MAX_PRICE{
+			pizzaChannel<-website
+			break
+		}
+	}
+}
+func sendMessage(pizzaChannel chan string){
+	fmt.Printf("\n Found a deal on pizza at %s",<-pizzaChannel)
+}
